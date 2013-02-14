@@ -116,6 +116,7 @@ class GameDrawingPanel extends JComponent {
 			int randomStartYPos = (int) (Math.random() * (GameBoard.boardHeight - 40) + 1);
 			// Add the Rock object to the ArrayList based on the attributes sent
 			rocks.add(new Rock(Rock.getpolyXArray(randomStartXPos), Rock.getpolyYArray(randomStartYPos), 13, randomStartXPos, randomStartYPos)); 		
+			Rock.rocks = rocks;
 		}
 	} 
 	

@@ -2,7 +2,8 @@ package com.gmail.mozvat.asteroids;
 
 //Leveraging the existing polygon class
 import java.awt.Polygon;
-
+import java.awt.Rectangle;
+import java.util.ArrayList;
 //Extending the Polygon class because I'm drawing Polygons
 @SuppressWarnings("serial")
 public class Rock extends Polygon {
@@ -18,6 +19,13 @@ public class Rock extends Polygon {
 	int height = GameBoard.boardHeight;
 	// Will hold the x & y coordinates for the Polygons	
 	int[] polyXArray, polyYArray;
+	//Rock Dimensions
+	int rockWidth = 26;
+	int rockHeight = 31;
+	// Used to change the direction of the asteroid when
+	// it hits something and determines how fast it moves
+	static ArrayList<Rock> rocks = new ArrayList<Rock>();
+
 	// x & y positions available for other methods
 	// There will be more Polygon points available later	
 	//public static int[] sPolyXArray = {6,18,36,48,54,54,48,36,18,6,0,0,6};
@@ -38,8 +46,27 @@ public class Rock extends Polygon {
 		this.uLeftXPos = randomStartXPos;
 		this.uLeftYPos = randomStartYPos;
 	}
+	
+	public Rectangle getBounds(){
+		return new Rectangle(super.xpoints[0], super.ypoints[0],rockWidth, rockHeight);
+	}
 		
 		public void move(){
+			//Get this rocks bounds
+			Rectangle rockToCheck = this.getBounds();
+			for(Rock rock : rocks){
+				Rectangle otherRock = rock.getBounds();
+				if(rock != this && otherRock.intersects(rockToCheck)){
+					int tempXDirection = this.xDirection;					
+					int tempYDirection = this.yDirection;
+					
+					this.xDirection = rock.xDirection;
+					this.yDirection = rock.yDirection;
+					
+					rock.xDirection = tempXDirection;
+					rock.yDirection = tempYDirection;
+				}
+			}
 			// Get the upper left and top most point for the Polygon
 			// This will be dynamic later on		
 			int uLeftXPos = super.xpoints[0]; 		
