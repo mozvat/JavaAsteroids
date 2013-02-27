@@ -50,19 +50,22 @@ public class Rock extends Polygon {
 	public Rectangle getBounds(){
 		return new Rectangle(super.xpoints[0], super.ypoints[0],rockWidth, rockHeight);
 	}
-		
 		public void move(){
 			//Get this rocks bounds
 			Rectangle rockToCheck = this.getBounds();
+			
 			for(Rock rock : rocks){
 				Rectangle otherRock = rock.getBounds();
+				//Check that we are not checking 'this' rock to itself
+				//Then check other rock to 'this' rock if there is an intersection/collision
 				if(rock != this && otherRock.intersects(rockToCheck)){
+					//Get 'this' rocks x,y direction
 					int tempXDirection = this.xDirection;					
 					int tempYDirection = this.yDirection;
-					
+					//set the other rocks x,y direction to this rocks direction
 					this.xDirection = rock.xDirection;
 					this.yDirection = rock.yDirection;
-					
+					//Set 'this' rocks original x,y direction to the other rock's direction
 					rock.xDirection = tempXDirection;
 					rock.yDirection = tempYDirection;
 				}

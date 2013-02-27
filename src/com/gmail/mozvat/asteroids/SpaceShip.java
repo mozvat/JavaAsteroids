@@ -17,9 +17,13 @@ public class SpaceShip extends Polygon{
 	int height = GameBoard.boardHeight;
 	
 	// Will hold the x & y coordinates for the ship
-		
-	public static int[] polyXArray = {500,527,500,508,500};
-	public static int[] polyYArray = {400,415,430,415,400};
+	public static int[] polyXArray = {-13,14,-13,-5,-13};
+	public static int[] polyYArray = {-15,0,15,0,-15};
+	
+	//public static int[] polyXArray = {500,527,500,508,500};
+	//public static int[] polyYArray = {400,415,430,415,400};
+	
+	static int rotationAngle = 0;
 	
 	// Creates a new space ship
 	public SpaceShip(){
@@ -33,6 +37,7 @@ public class SpaceShip extends Polygon{
 		// Get the upper left and top most point for the Polygon
 		// This will be dynamic later on
 		
+		/*
 		int uLeftXPos = super.xpoints[0]; 
 		int uLeftYPos = super.ypoints[0];
 		
@@ -48,5 +53,9 @@ public class SpaceShip extends Polygon{
 			super.ypoints[i] += yDirection;
 			
 		}
+		*/
+		
+		super.xpoints = SpaceShip.polyXArray;
+		super.ypoints = SpaceShip.polyYArray;
 	}
 }

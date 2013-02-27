@@ -4,6 +4,9 @@ package com.gmail.mozvat.asteroids;
 import java.awt.BorderLayout;
 //Define color of shapes
 import java.awt.Color;
+
+import java.awt.geom.AffineTransform;
+
 //Allows me to draw and render shapes on components
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -27,6 +30,9 @@ public class GameBoard extends JFrame{
 	public static int boardWidth = 1000;
 	public static int boardHeight = 800;
 	
+	public static boolean keyHeld = false;
+	public static int keyHeldCode;
+	
 	public static void main(String [] args){
          new GameBoard();
 	}
@@ -47,17 +53,26 @@ public class GameBoard extends JFrame{
 
 			@Override
 			public void keyPressed(KeyEvent e) {
-				// TODO Auto-generated method stub
-			}
-
-			@Override
-			public void keyReleased(KeyEvent e) {
 				if (e.getKeyCode()==87)
 			    {
 					System.out.println("Forward");
 			    } else if (e.getKeyCode()==83){
 			    	System.out.println("Backward");
+			    } else if (e.getKeyCode()==68){
+			    	System.out.println("Rotate Right");
+			    	keyHeldCode = e.getKeyCode();
+			    	keyHeld = true;
+			    } else if (e.getKeyCode()==65){
+			    	System.out.println("Rotate Left");
+			    	keyHeldCode = e.getKeyCode();
+			    	keyHeld = true;
 			    }
+			    
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				keyHeld = false;
 			}
      });
      
@@ -109,7 +124,7 @@ class GameDrawingPanel extends JComponent {
 	// Creates 50 Rock objects and stores them in the ArrayList
 	public GameDrawingPanel() { 
 		
-		for(int i = 0; i < 30; i++){
+		for(int i = 0; i < 2; i++){
 			// Find a random x & y starting point
 			// The -40 part is on there to keep the Rock on the screen
 			int randomStartXPos = (int) (Math.random() * (GameBoard.boardWidth - 40) + 1);
@@ -123,6 +138,10 @@ class GameDrawingPanel extends JComponent {
 	public void paint(Graphics g) { 
 		// Allows me to make many settings changes in regards to graphics	
 		Graphics2D graphicSettings = (Graphics2D)g; 
+		
+		AffineTransform identity  = new AffineTransform();
+		
+		
 		// Draw a black background that is as big as the game board
 		graphicSettings.setColor(Color.BLACK);
 		graphicSettings.fillRect(0, 0, getWidth(), getHeight());
@@ -137,7 +156,19 @@ class GameDrawingPanel extends JComponent {
 			// redraw the polygon Rock on the screen
 			graphicSettings.draw(rock); 
 		} 
+	
+		if(GameBoard.keyHeld == true && GameBoard.keyHeldCode == 68 ){
+			SpaceShip.rotationAngle += 10;
+		}else if (GameBoard.keyHeld == true && GameBoard.keyHeldCode == 65 ){
+			SpaceShip.rotationAngle -= 10;
+		} 
+			
 		theShip.move();
+		
+		graphicSettings.setTransform(identity);
+		graphicSettings.translate(GameBoard.boardWidth/2,GameBoard.boardHeight/2);
+		graphicSettings.rotate(Math.toRadians(SpaceShip.rotationAngle));
+		
 		graphicSettings.draw(theShip);
 	} 
 	
